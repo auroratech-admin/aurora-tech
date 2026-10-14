@@ -48,8 +48,10 @@ jobs:
           ssh-keyscan -p "$SG_PORT" -H "$SG_HOST" >> ~/.ssh/known_hosts
 
       # --delete limpia archivos viejos del sitio, pero los filtros "P" (protect) impiden
-      # borrar api/data/ (hojas del Libro de Reclamaciones, que la ley obliga a conservar)
-      # y .well-known/ (certificado SSL de SiteGround). api/data/.htaccess sí se sube.
+      # borrar api/data/ (hojas del Libro de Reclamaciones, que la ley obliga a conservar),
+      # .well-known/ (certificado SSL de SiteGround) y _next/static/ (estilos y scripts de
+      # versiones anteriores: una página en caché de una versión vieja sigue viéndose bien).
+      # api/data/.htaccess sí se sube.
       - name: Subir a public_html
         env:
           SG_HOST: ${{ secrets.SG_HOST }}
@@ -59,6 +61,7 @@ jobs:
           rsync -az --delete \
             --filter='P api/data/***' \
             --filter='P .well-known/***' \
+            --filter='P _next/static/***' \
             -e "ssh -i ~/.ssh/siteground -p $SG_PORT" \
             out/ "$SG_USER@$SG_HOST:$REMOTE_DIR"
 
