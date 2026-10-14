@@ -62,12 +62,13 @@ jobs:
             -e "ssh -i ~/.ssh/siteground -p $SG_PORT" \
             out/ "$SG_USER@$SG_HOST:$REMOTE_DIR"
 
+      # SiteGround responde 202 (desafío anti-bots) a las IPs de GitHub: se acepta 200 o 202.
       - name: Comprobar el sitio
         run: |
           sleep 5
-          code=$(curl -s -o /dev/null -w '%{http_code}' https://aurora-tech.com.pe/)
+          code=$(curl -s -o /dev/null -A 'Mozilla/5.0 (deploy-check)' -w '%{http_code}' https://aurora-tech.com.pe/)
           echo "HTTP $code"
-          test "$code" = "200"
+          case "$code" in 200|202) ;; *) echo "::error::El sitio respondió HTTP $code"; exit 1 ;; esac
 
       - name: Limpiar clave
         if: always()
