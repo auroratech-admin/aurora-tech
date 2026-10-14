@@ -75,7 +75,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Geist', 'Geist Fallback';
+  --font-sans: var(--font-public-sans), system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -123,3 +123,46 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ---- Marca Aurora Tech · propuesta C "Consultora" ---- */
+@theme {
+  --font-serif: var(--font-source-serif), Georgia, 'Times New Roman', serif;
+  --color-navy: #14233b;
+  --color-navy-800: #1d3050;
+  --color-ink: #1b2a3f;
+  --color-gold: #9a7b3f;
+  --color-gold-300: #c9ad74;
+  --color-paper: #fbfaf8;
+  --color-sand: #f1eee8;
+  --color-rule: #e4e1da;
+  --color-body: #535a66;
+  --color-mist: #c8d0dc;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+/* Texto de las páginas legales */
+.legal h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+.legal h2:first-child { margin-top: 0; }
+.legal p, .legal li {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-body);
+}
+.legal ul { margin-top: 0.5rem; padding-left: 1.25rem; list-style: disc; }
+.legal li { margin-top: 0.35rem; }
+.legal strong { color: var(--color-ink); font-weight: 600; }
+.legal a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 2px; }
+.legal table { margin-top: 1rem; width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.legal th, .legal td { border-top: 1px solid var(--color-rule); padding: 0.6rem 0.5rem 0.6rem 0; text-align: left; vertical-align: top; color: var(--color-body); }
+.legal th { color: var(--color-ink); font-weight: 600; }

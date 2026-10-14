@@ -1,0 +1,5 @@
+# Solo los endpoints públicos; lib.php y data/ no se sirven.
+<Files "lib.php">
+  Require all denied
+</Files>
+Options -Indexes

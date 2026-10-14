@@ -1,319 +1,169 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Building2 } from 'lucide-react'
 import { useState } from 'react'
+import { Mail, MapPin, Building2, MessageCircle } from 'lucide-react'
+import SectionHeader from '@/components/section-header'
+import { site, whatsappUrl } from '@/lib/site'
+
+const services = [
+  'Software a medida',
+  'Aplicación web o móvil',
+  'QA y automatización',
+  'Cloud e infraestructura',
+  'Ciberseguridad',
+  'Datos, BI e IA',
+  'Requerimiento de entidad pública',
+  'Otro',
+]
+
+const inputClass =
+  'w-full rounded-[3px] border border-rule bg-white px-3 py-2.5 text-sm text-ink transition placeholder:text-body/60 focus:border-navy focus:ring-2 focus:ring-navy/10 focus:outline-none'
+const labelClass = 'mb-1.5 block text-sm font-medium text-ink'
 
 const Contacto = () => {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    empresa: '',
-    email: '',
-    telefono: '',
-    servicio: '',
-    mensaje: '',
-  })
+  const [form, setForm] = useState({ nombre: '', empresa: '', email: '', telefono: '', servicio: '', mensaje: '' })
+  const [consent, setConsent] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [error, setError] = useState('')
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Envío por public/api/contacto.php (PHP en SiteGround). En `pnpm dev` no hay PHP: se muestra el aviso de error.
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsSubmitting(false)
-    setFormData({
-      nombre: '',
-      empresa: '',
-      email: '',
-      telefono: '',
-      servicio: '',
-      mensaje: '',
-    })
+    setStatus('sending')
+    setError('')
+    const website = (new FormData(e.currentTarget).get('website') as string) ?? ''
+    try {
+      const res = await fetch('/api/contacto.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, consentimiento: consent, website }),
+      })
+      const data = await res.json().catch(() => null)
+      if (!res.ok || !data?.ok) throw new Error(data?.error ?? 'No pudimos enviar tu mensaje.')
+      setStatus('sent')
+      setForm({ nombre: '', empresa: '', email: '', telefono: '', servicio: '', mensaje: '' })
+      setConsent(false)
+    } catch (err) {
+      setStatus('error')
+      setError(err instanceof Error && !/fetch|JSON/i.test(err.message) ? err.message : 'No pudimos enviar tu mensaje.')
+    }
   }
 
-  const contactInfo = [
-    {
-      icon: MapPin,
-      label: 'Dirección',
-      value: 'Cal. Verástegui 160, Zona C, San Juan de Miraflores, Lima, Perú',
-      color: 'from-cyan-400 to-blue-500',
-    },
-    {
-      icon: Building2,
-      label: 'RUC',
-      value: '20615864804',
-      color: 'from-purple-400 to-purple-600',
-    },
-    {
-      icon: Mail,
-      label: 'Email',
-      value: 'contacto@auroratech.pe',
-      color: 'from-emerald-400 to-teal-500',
-    },
-    {
-      icon: Phone,
-      label: 'Teléfono',
-      value: '+51 (1) XXXX-XXXX',
-      color: 'from-pink-400 to-rose-500',
-    },
-  ]
+  const info = [
+    { icon: MapPin, label: 'Dirección', value: site.address },
+    { icon: Building2, label: 'RUC', value: site.ruc },
+    site.email && { icon: Mail, label: 'Correo', value: site.email, href: `mailto:${site.email}` },
+    site.whatsapp && { icon: MessageCircle, label: 'WhatsApp', value: site.phoneDisplay, href: whatsappUrl() ?? undefined },
+  ].filter(Boolean) as { icon: typeof Mail; label: string; value: string; href?: string }[]
 
   return (
-    <section
-      id="contacto"
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 relative overflow-hidden"
-    >
-      {/* Background */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{ opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity }}
-      >
-        <div className="absolute top-20 right-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl" />
-      </motion.div>
+    <section id="contacto" className="border-t border-rule bg-paper py-20 sm:py-28">
+      <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+        <div>
+          <SectionHeader
+            eyebrow="Contacto"
+            title="Conversemos sobre tu proyecto"
+            description="Cuéntanos qué necesitas y te enviaremos una propuesta o cotización formal."
+          />
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Ponte en <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">Contacto</span>
-          </h2>
-          <p className="text-slate-400 text-lg">
-            Cuéntanos sobre tu proyecto y te ayudaremos a hacerlo realidad
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="group"
-          >
-            <div className="bg-gradient-to-br from-cyan-400/20 to-blue-500/20 p-0.5 rounded-2xl">
-              <form
-                onSubmit={handleSubmit}
-                className="bg-slate-900/80 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 group-hover:border-cyan-400/50 transition-all space-y-6"
-              >
-                {/* Nombre */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">
-                    Nombre Completo
-                  </label>
-                  <input
-                    type="text"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all"
-                    placeholder="Tu nombre"
-                  />
-                </motion.div>
-
-                {/* Empresa */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.25 }}
-                  viewport={{ once: true }}
-                >
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">
-                    Empresa
-                  </label>
-                  <input
-                    type="text"
-                    name="empresa"
-                    value={formData.empresa}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all"
-                    placeholder="Tu empresa"
-                  />
-                </motion.div>
-
-                {/* Email y Teléfono */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.3 }}
-                    viewport={{ once: true }}
-                  >
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all"
-                      placeholder="tu@email.com"
-                    />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.35 }}
-                    viewport={{ once: true }}
-                  >
-                    <label className="block text-sm font-semibold text-slate-300 mb-2">
-                      Teléfono
-                    </label>
-                    <input
-                      type="tel"
-                      name="telefono"
-                      value={formData.telefono}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all"
-                      placeholder="+51 (1) XXX-XXXX"
-                    />
-                  </motion.div>
+          <dl className="mt-10 space-y-5">
+            {info.map(({ icon: Icon, label, value, href }) => (
+              <div key={label} className="flex gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[3px] border border-rule bg-white text-gold">
+                  <Icon className="h-5 w-5" />
                 </div>
-
-                {/* Servicio */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">
-                    Servicio de Interés
-                  </label>
-                  <select
-                    name="servicio"
-                    value={formData.servicio}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all"
-                  >
-                    <option value="">Selecciona un servicio</option>
-                    <option value="programacion">Programación Informática</option>
-                    <option value="consultoria-it">Consultoría de Informática</option>
-                    <option value="consultoria-gestion">Consultoría de Gestión</option>
-                    <option value="otros">Otros</option>
-                  </select>
-                </motion.div>
-
-                {/* Mensaje */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.45 }}
-                  viewport={{ once: true }}
-                >
-                  <label className="block text-sm font-semibold text-slate-300 mb-2">
-                    Mensaje
-                  </label>
-                  <textarea
-                    name="mensaje"
-                    value={formData.mensaje}
-                    onChange={handleChange}
-                    required
-                    rows={4}
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none transition-all resize-none"
-                    placeholder="Cuéntanos sobre tu proyecto..."
-                  />
-                </motion.div>
-
-                {/* Submit Button */}
-                <motion.button
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  disabled={isSubmitting}
-                  type="submit"
-                  className="w-full px-6 py-3 bg-gradient-to-r from-cyan-400 to-cyan-500 text-slate-950 font-bold rounded-lg hover:shadow-lg hover:shadow-cyan-400/50 transition-all disabled:opacity-50"
-                >
-                  {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
-                </motion.button>
-              </form>
-            </div>
-          </motion.div>
-
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            {contactInfo.map((item, index) => {
-              const Icon = item.icon
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ x: 4 }}
-                  className="flex gap-4"
-                >
-                  <div
-                    className={`flex-shrink-0 w-12 h-12 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center`}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-slate-400">{item.label}</p>
-                    <p className="text-white font-semibold">{item.value}</p>
-                  </div>
-                </motion.div>
-              )
-            })}
-
-            {/* Map Placeholder */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="mt-8 bg-slate-900/50 border border-slate-700/50 rounded-2xl p-6 text-center"
-            >
-              <div className="aspect-video bg-slate-800/50 rounded-lg mb-4 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-slate-600 mx-auto mb-2" />
-                  <p className="text-slate-400 text-sm">
-                    Google Maps - San Juan de Miraflores, Lima
-                  </p>
+                <div>
+                  <dt className="text-xs font-semibold tracking-[0.14em] text-body uppercase">{label}</dt>
+                  <dd className="mt-0.5 text-sm font-medium text-ink">
+                    {href ? (
+                      <a href={href} className="hover:text-gold">
+                        {value}
+                      </a>
+                    ) : (
+                      value
+                    )}
+                  </dd>
                 </div>
               </div>
-              <p className="text-slate-400 text-sm">
-                Ubicación: Cal. Verástegui 160, Zona C, San Juan de Miraflores
-              </p>
-            </motion.div>
-          </motion.div>
+            ))}
+          </dl>
         </div>
+
+        <form onSubmit={onSubmit} className="rounded-[3px] border border-rule bg-white p-6 sm:p-8">
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="nombre" className={labelClass}>Nombre completo</label>
+              <input id="nombre" name="nombre" required value={form.nombre} onChange={onChange} className={inputClass} />
+            </div>
+            <div>
+              <label htmlFor="empresa" className={labelClass}>Empresa o entidad</label>
+              <input id="empresa" name="empresa" required value={form.empresa} onChange={onChange} className={inputClass} />
+            </div>
+            <div>
+              <label htmlFor="email" className={labelClass}>Correo</label>
+              <input id="email" name="email" type="email" required value={form.email} onChange={onChange} className={inputClass} />
+            </div>
+            <div>
+              <label htmlFor="telefono" className={labelClass}>Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" value={form.telefono} onChange={onChange} className={inputClass} placeholder="+51 9XX XXX XXX" />
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <label htmlFor="servicio" className={labelClass}>Servicio de interés</label>
+            <select id="servicio" name="servicio" required value={form.servicio} onChange={onChange} className={inputClass}>
+              <option value="">Selecciona una opción</option>
+              {services.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mt-5">
+            <label htmlFor="mensaje" className={labelClass}>Mensaje</label>
+            <textarea id="mensaje" name="mensaje" required rows={4} value={form.mensaje} onChange={onChange} className={`${inputClass} resize-none`} placeholder="Describe brevemente tu requerimiento" />
+          </div>
+
+          <label className="mt-5 flex items-start gap-3 text-xs leading-relaxed text-body">
+            <input
+              type="checkbox"
+              required
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-rule accent-[#14233b]"
+            />
+            <span>
+              Autorizo a {site.legalName} a tratar mis datos personales para atender mi consulta, conforme a la{' '}
+              <a href="/privacidad/" target="_blank" className="font-medium text-ink underline underline-offset-2">
+                Política de privacidad
+              </a>{' '}
+              y la Ley N.° 29733.
+            </span>
+          </label>
+
+          <button
+            type="submit"
+            disabled={status === 'sending'}
+            className="mt-6 w-full rounded-[3px] bg-navy px-6 py-3 text-sm font-medium text-white transition hover:bg-navy-800 disabled:cursor-wait disabled:opacity-60"
+          >
+            {status === 'sending' ? 'Enviando…' : 'Enviar consulta'}
+          </button>
+          <div aria-live="polite" className="mt-3 text-center text-sm">
+            {status === 'sent' && (
+              <p className="text-emerald-700">Recibimos tu consulta. Te responderemos a la brevedad desde {site.email}.</p>
+            )}
+            {status === 'error' && (
+              <p className="text-red-700">
+                {error} Escríbenos a <a href={`mailto:${site.email}`} className="underline">{site.email}</a> o por{' '}
+                <a href={whatsappUrl() ?? '#'} target="_blank" rel="noopener noreferrer" className="underline">WhatsApp</a>.
+              </p>
+            )}
+          </div>
+        </form>
       </div>
     </section>
   )

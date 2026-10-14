@@ -1,114 +1,71 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
+import { useState } from 'react'
+import Image from 'next/image'
+import { Menu, X } from 'lucide-react'
+import { navItems } from '@/lib/site'
 
 const Navbar = () => {
-  const [activeSection, setActiveSection] = useState('inicio')
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-
-      // Update active section based on scroll position
-      const sections = ['inicio', 'servicios', 'sobre-nosotros', 'portafolio', 'testimonios', 'contacto']
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setActiveSection(id)
-    }
-  }
-
-  const navItems = [
-    { id: 'inicio', label: 'Inicio' },
-    { id: 'servicios', label: 'Servicios' },
-    { id: 'sobre-nosotros', label: 'Sobre Nosotros' },
-    { id: 'portafolio', label: 'Portafolio' },
-    { id: 'testimonios', label: 'Testimonios' },
-    { id: 'contacto', label: 'Contacto' },
-  ]
+  const [open, setOpen] = useState(false)
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300 ${
-        isScrolled
-          ? 'bg-slate-950/80 border-b border-cyan-400/20'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2 cursor-pointer"
-            onClick={() => scrollToSection('inicio')}
-          >
-            <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-cyan-400/50">
-              AT
-            </div>
-            <span className="hidden sm:inline text-white font-bold">Aurora Tech</span>
-          </motion.div>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy/95 text-white backdrop-blur">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <a href="/#inicio" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+          <Image src="/logo-mark.png" alt="" width={34} height={30} priority />
+          <span className="text-[15px] font-semibold tracking-wide">
+            AURORA <span className="font-medium tracking-[0.22em] text-mist">TECH</span>
+          </span>
+        </a>
 
-          {/* Nav Items */}
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative text-sm font-medium transition-colors ${
-                  activeSection === item.id
-                    ? 'text-cyan-400'
-                    : 'text-slate-300 hover:text-cyan-400'
-                }`}
-                whileHover={{ scale: 1.05 }}
-              >
-                {item.label}
-                {activeSection === item.id && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => scrollToSection('contacto')}
-            className="hidden sm:block px-6 py-2 bg-gradient-to-r from-cyan-400 to-cyan-500 text-slate-950 font-bold rounded-lg hover:shadow-lg hover:shadow-cyan-400/50 transition-all"
-          >
-            Contacto
-          </motion.button>
+        <div className="hidden items-center gap-7 md:flex">
+          {navItems.map((item) => (
+            <a key={item.id} href={`/#${item.id}`} className="text-sm text-mist transition hover:text-white">
+              {item.label}
+            </a>
+          ))}
         </div>
-      </div>
-    </motion.nav>
+
+        <a
+          href="/#contacto"
+          className="hidden rounded-[3px] bg-white px-4 py-2 text-sm font-medium text-navy transition hover:bg-sand md:inline-flex"
+        >
+          Contacto
+        </a>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="rounded-md p-2 text-white hover:bg-white/10 md:hidden"
+          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={open}
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </nav>
+
+      {open && (
+        <div className="border-t border-white/10 px-4 pb-4 md:hidden">
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={`/#${item.id}`}
+              onClick={() => setOpen(false)}
+              className="block border-b border-white/10 px-1 py-3 text-sm text-mist hover:text-white"
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="/#contacto"
+            onClick={() => setOpen(false)}
+            className="mt-4 block rounded-[3px] bg-white px-4 py-3 text-center text-sm font-medium text-navy"
+          >
+            Conversemos sobre tu proyecto
+          </a>
+        </div>
+      )}
+    </header>
   )
 }
 

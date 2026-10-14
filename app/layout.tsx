@@ -1,37 +1,40 @@
-import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import { Public_Sans, Source_Serif_4 } from 'next/font/google'
+import { site } from '@/lib/site'
+import WhatsAppButton from '@/components/whatsapp-button'
 import './globals.css'
 
-const geist = Geist({ subsets: ["latin"] });
+const publicSans = Public_Sans({ subsets: ['latin'], variable: '--font-public-sans' })
+const sourceSerif = Source_Serif_4({ subsets: ['latin'], weight: ['500', '600'], variable: '--font-source-serif' })
 
 export const metadata: Metadata = {
-  title: 'Aurora Tech S.A.C.',
-  description: 'Transformamos ideas en soluciones digitales - Desarrollo de software, consultoría TI y gestión empresarial',
-  generator: 'v0.app',
+  metadataBase: new URL(site.url),
+  title: {
+    default: 'Aurora Tech S.A.C. | Desarrollo de software y servicios de TI en Lima',
+    template: '%s | Aurora Tech',
+  },
+  description:
+    'Desarrollo de software a medida, aplicaciones web y móviles, QA, cloud y ciberseguridad para empresas y entidades públicas del Perú. Proveedor del Estado con RNP vigente.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'es_PE',
+    url: site.url,
+    siteName: site.legalName,
+    title: 'Aurora Tech S.A.C. | Desarrollo de software y servicios de TI',
+    description: 'Soluciones de software para empresas y entidades públicas del Perú.',
+    images: ['/logo-aurora-tech.png'],
+  },
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
+    icon: '/icon-32x32.png',
     apple: '/apple-icon.png',
   },
-  viewport: {
-    themeColor: '#0f172a',
-    width: 'device-width',
-    initialScale: 1,
-    userScalable: true,
-  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#14233b',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -40,10 +43,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className="bg-slate-950">
-      <body className={`${geist.className} font-sans antialiased text-slate-200 bg-slate-950`}>
+    <html lang="es-PE" className={`${publicSans.variable} ${sourceSerif.variable}`}>
+      <body className="bg-paper font-sans text-ink antialiased">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <WhatsAppButton />
       </body>
     </html>
   )
