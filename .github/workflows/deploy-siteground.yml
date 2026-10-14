@@ -1,0 +1,74 @@
+# Publica la web en SiteGround cada vez que se actualiza master.
+# Secretos requeridos (Settings → Secrets and variables → Actions):
+#   SG_HOST, SG_USER, SG_PORT (normalmente 18765), SG_SSH_KEY (clave privada)
+name: Deploy SiteGround
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-siteground
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      REMOTE_DIR: www/aurora-tech.com.pe/public_html/
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Compilar sitio estático
+        run: pnpm build
+
+      - name: Configurar SSH
+        env:
+          SG_SSH_KEY: ${{ secrets.SG_SSH_KEY }}
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SG_SSH_KEY" > ~/.ssh/siteground
+          chmod 600 ~/.ssh/siteground
+          ssh-keyscan -p "$SG_PORT" -H "$SG_HOST" >> ~/.ssh/known_hosts
+
+      # --delete limpia archivos viejos del sitio, pero los filtros "P" (protect) impiden
+      # borrar api/data/ (hojas del Libro de Reclamaciones, que la ley obliga a conservar)
+      # y .well-known/ (certificado SSL de SiteGround). api/data/.htaccess sí se sube.
+      - name: Subir a public_html
+        env:
+          SG_HOST: ${{ secrets.SG_HOST }}
+          SG_USER: ${{ secrets.SG_USER }}
+          SG_PORT: ${{ secrets.SG_PORT }}
+        run: |
+          rsync -az --delete \
+            --filter='P api/data/***' \
+            --filter='P .well-known/***' \
+            -e "ssh -i ~/.ssh/siteground -p $SG_PORT" \
+            out/ "$SG_USER@$SG_HOST:$REMOTE_DIR"
+
+      - name: Comprobar el sitio
+        run: |
+          sleep 5
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://aurora-tech.com.pe/)
+          echo "HTTP $code"
+          test "$code" = "200"
+
+      - name: Limpiar clave
+        if: always()
+        run: rm -f ~/.ssh/siteground
