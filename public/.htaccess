@@ -14,3 +14,15 @@ ErrorDocument 404 /404.html
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
 </IfModule>
+
+# Caché: las páginas HTML (y datos de navegación de Next) se revalidan siempre, para que
+# SiteGround y los navegadores no sirvan una portada vieja que apunte a archivos ya borrados.
+# Los archivos de /_next/static/ tienen nombre único por versión: se cachean un año.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|txt|xml)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <If "%{REQUEST_URI} =~ m#^/_next/static/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+</IfModule>
