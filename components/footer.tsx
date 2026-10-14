@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { BookOpen } from 'lucide-react'
-import { legalLinks, navItems, site, whatsappUrl } from '@/lib/site'
+import { legalLinks, site, whatsappUrl } from '@/lib/site'
+import { services } from '@/lib/services'
 
 const Footer = () => (
   <footer className="bg-navy text-mist">
@@ -18,15 +19,20 @@ const Footer = () => (
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">Secciones</h3>
+        <h3 className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">Servicios</h3>
         <ul className="mt-4 space-y-2">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <a href={`/#${item.id}`} className="text-sm text-mist hover:text-white">
-                {item.label}
+          {services.map((s) => (
+            <li key={s.slug}>
+              <a href={`/servicios/${s.slug}/`} className="text-sm text-mist hover:text-white">
+                {s.name}
               </a>
             </li>
           ))}
+          <li>
+            <a href="/sector-publico/" className="text-sm text-mist hover:text-white">
+              Sector público
+            </a>
+          </li>
         </ul>
       </div>
 

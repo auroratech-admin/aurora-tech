@@ -33,6 +33,10 @@ const SectorPublico = () => (
           </div>
         ))}
       </div>
+
+      <a href="/sector-publico/" className="mt-8 inline-block text-sm font-semibold text-ink underline decoration-gold underline-offset-4 hover:text-gold">
+        Cómo atendemos los requerimientos de entidades públicas →
+      </a>
     </div>
   </section>
 )
