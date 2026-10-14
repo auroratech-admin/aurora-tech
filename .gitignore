@@ -13,3 +13,9 @@ __v0_jsx-dev-runtime.ts
 node_modules
 .next/
 .DS_Store
+# Export estático para SiteGround
+out/
+public/api/data/*
+!public/api/data/.htaccess
+aurora-tech-web-siteground.zip
+tsconfig.tsbuildinfo
