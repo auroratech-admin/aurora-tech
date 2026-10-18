@@ -10,8 +10,8 @@ const sourceSerif = Source_Serif_4({ subsets: ['latin'], weight: ['500', '600'],
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Aurora Tech S.A.C. | Desarrollo de software y servicios de TI en Lima',
-    template: '%s | Aurora Tech',
+    default: 'Aurora Tech SAC',
+    template: '%s | Aurora Tech SAC',
   },
   description:
     'Desarrollo de software a medida, aplicaciones web y móviles, QA, cloud y ciberseguridad para empresas y entidades públicas del Perú. Proveedor del Estado con RNP vigente.',
