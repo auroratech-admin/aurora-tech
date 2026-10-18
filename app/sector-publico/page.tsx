@@ -29,7 +29,7 @@ const steps = [
 ]
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">{children}</p>
+  <p className="text-xs font-semibold tracking-[0.14em] text-terracota uppercase">{children}</p>
 )
 
 export default function SectorPublicoPage() {
@@ -40,7 +40,7 @@ export default function SectorPublicoPage() {
         <header className="bg-navy pt-28 pb-14 text-white sm:pt-36 sm:pb-20">
           <div className="mx-auto grid max-w-6xl items-end gap-12 px-4 sm:px-6 lg:grid-cols-[1.4fr_1fr]">
             <div>
-              <p className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">Sector público</p>
+              <p className="text-xs font-semibold tracking-[0.14em] text-terracota-300 uppercase">Sector público</p>
               <h1 className="mt-3 font-serif text-4xl leading-[1.1] font-medium text-balance sm:text-5xl">
                 Proveedor de software y servicios de TI para el Estado
               </h1>
@@ -67,7 +67,7 @@ export default function SectorPublicoPage() {
             <ol className="mt-10 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
               {steps.map((s, i) => (
                 <li key={s.title} className="border-t border-rule py-6">
-                  <span className="font-serif text-2xl text-gold tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-2xl text-terracota tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-2 text-base font-semibold text-ink">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-body">{s.text}</p>
                 </li>
@@ -87,7 +87,7 @@ export default function SectorPublicoPage() {
             <ul className="grid gap-x-10 sm:grid-cols-2">
               {services.map((s) => (
                 <li key={s.slug} className="border-t border-rule py-5">
-                  <a href={`/servicios/${s.slug}/`} className="text-base font-semibold text-ink hover:text-gold">
+                  <a href={`/servicios/${s.slug}/`} className="text-base font-semibold text-ink hover:text-terracota">
                     {s.name} →
                   </a>
                 </li>

@@ -10,8 +10,8 @@ const sourceSerif = Source_Serif_4({ subsets: ['latin'], weight: ['500', '600'],
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Aurora Tech S.A.C. | Desarrollo de software y servicios de TI en Lima',
-    template: '%s | Aurora Tech',
+    default: 'Aurora Tech SAC',
+    template: '%s | Aurora Tech SAC',
   },
   description:
     'Desarrollo de software a medida, aplicaciones web y móviles, QA, cloud y ciberseguridad para empresas y entidades públicas del Perú. Proveedor del Estado con RNP vigente.',
@@ -23,10 +23,15 @@ export const metadata: Metadata = {
     siteName: site.legalName,
     title: 'Aurora Tech S.A.C. | Desarrollo de software y servicios de TI',
     description: 'Soluciones de software para empresas y entidades públicas del Perú.',
-    images: ['/logo-aurora-tech.png'],
+    images: ['/og-aurora-tech.png'],
   },
+  // SVG (nítido en pantallas retina) según el tema del navegador; PNG como respaldo.
   icons: {
-    icon: '/icon-32x32.png',
+    icon: [
+      { url: '/icon-light.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: light)' },
+      { url: '/icon-dark.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: dark)' },
+      { url: '/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
     apple: '/apple-icon.png',
   },
 }

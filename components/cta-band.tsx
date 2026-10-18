@@ -11,7 +11,7 @@ const CtaBand = ({
   <section className="bg-navy py-16 text-white sm:py-20">
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-end lg:justify-between">
       <div className="max-w-xl">
-        <div className="h-0.5 w-12 bg-gold" />
+        <div className="h-0.5 w-12 bg-amanecer" />
         <h2 className="mt-5 font-serif text-3xl leading-tight font-medium text-balance">{title}</h2>
         <p className="mt-3 text-mist">{text}</p>
       </div>
