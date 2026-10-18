@@ -72,14 +72,14 @@ const Contacto = () => {
           <dl className="mt-10 space-y-5">
             {info.map(({ icon: Icon, label, value, href }) => (
               <div key={label} className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[3px] border border-rule bg-white text-gold">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[3px] border border-rule bg-white text-terracota">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
                   <dt className="text-xs font-semibold tracking-[0.14em] text-body uppercase">{label}</dt>
                   <dd className="mt-0.5 text-sm font-medium text-ink">
                     {href ? (
-                      <a href={href} className="hover:text-gold">
+                      <a href={href} className="hover:text-terracota">
                         {value}
                       </a>
                     ) : (

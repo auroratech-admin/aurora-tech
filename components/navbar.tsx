@@ -12,7 +12,7 @@ const Navbar = () => {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-navy/95 text-white backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a href="/#inicio" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Image src="/logo-mark.png" alt="" width={34} height={30} priority />
+          <Image src="/logo-mark.svg" alt="" width={34} height={32} priority />
           <span className="text-[15px] font-semibold tracking-wide">
             AURORA <span className="font-medium tracking-[0.22em] text-mist">TECH</span>
           </span>

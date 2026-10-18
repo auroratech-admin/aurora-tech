@@ -18,7 +18,7 @@ const LegalLayout = ({ eyebrow, title, updated, intro, prose = true, children }:
     <main className="bg-paper">
       <header className="bg-navy pt-28 pb-12 text-white sm:pt-32">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <p className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">{eyebrow}</p>
+          <p className="text-xs font-semibold tracking-[0.14em] text-terracota-300 uppercase">{eyebrow}</p>
           <h1 className="mt-3 font-serif text-3xl leading-tight font-medium text-balance sm:text-4xl">{title}</h1>
           {updated && <p className="mt-3 text-sm text-mist">Última actualización: {updated}</p>}
         </div>

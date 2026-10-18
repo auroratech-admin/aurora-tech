@@ -29,7 +29,7 @@ const label = 'mb-1.5 block text-sm font-medium text-ink'
 
 const Fieldset = ({ n, title, children }: { n: number; title: string; children: React.ReactNode }) => (
   <fieldset className="border-t border-rule pt-6">
-    <legend className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">
+    <legend className="text-xs font-semibold tracking-[0.14em] text-terracota uppercase">
       {n}. {title}
     </legend>
     <div className="mt-4 grid gap-5 sm:grid-cols-2">{children}</div>
@@ -73,7 +73,7 @@ export default function LibroReclamacionesForm() {
   if (status === 'sent' && result) {
     return (
       <div className="rounded-[3px] border border-rule bg-white p-6 sm:p-8">
-        <p className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">Hoja registrada</p>
+        <p className="text-xs font-semibold tracking-[0.14em] text-terracota uppercase">Hoja registrada</p>
         <h2 className="mt-2 font-serif text-2xl font-medium text-ink">Hoja de reclamación N.° {result.numero}</h2>
         <p className="mt-3 text-sm leading-relaxed text-body">
           Registramos tu {form.tipo.toLowerCase()} el {result.fecha}. Enviamos una copia de la hoja a{' '}

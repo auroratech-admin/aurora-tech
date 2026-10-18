@@ -20,7 +20,7 @@ const points = [
 const SectorPublico = () => (
   <section id="estado" className="border-t border-rule bg-sand py-20 sm:py-28">
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <p className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">Sector público</p>
+      <p className="text-xs font-semibold tracking-[0.14em] text-terracota uppercase">Sector público</p>
       <blockquote className="mt-4 max-w-[34ch] font-serif text-2xl leading-snug font-medium text-balance text-ink sm:text-3xl">
         Habilitados para contratar con el Estado peruano, con RNP vigente en Bienes y Servicios.
       </blockquote>
@@ -34,7 +34,7 @@ const SectorPublico = () => (
         ))}
       </div>
 
-      <a href="/sector-publico/" className="mt-8 inline-block text-sm font-semibold text-ink underline decoration-gold underline-offset-4 hover:text-gold">
+      <a href="/sector-publico/" className="mt-8 inline-block text-sm font-semibold text-ink underline decoration-amanecer underline-offset-4 hover:text-terracota">
         Cómo atendemos los requerimientos de entidades públicas →
       </a>
     </div>

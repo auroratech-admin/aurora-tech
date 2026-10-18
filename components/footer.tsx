@@ -8,7 +8,7 @@ const Footer = () => (
     <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
       <div>
         <div className="flex items-center gap-2.5">
-          <Image src="/logo-mark.png" alt="" width={34} height={30} />
+          <Image src="/logo-mark.svg" alt="" width={34} height={32} />
           <span className="text-[15px] font-semibold tracking-wide text-white">
             AURORA <span className="font-medium tracking-[0.22em] text-mist">TECH</span>
           </span>
@@ -19,7 +19,7 @@ const Footer = () => (
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">Servicios</h3>
+        <h3 className="text-xs font-semibold tracking-[0.14em] text-terracota-300 uppercase">Servicios</h3>
         <ul className="mt-4 space-y-2">
           {services.map((s) => (
             <li key={s.slug}>
@@ -37,7 +37,7 @@ const Footer = () => (
       </div>
 
       <div>
-        <h3 className="text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">Empresa</h3>
+        <h3 className="text-xs font-semibold tracking-[0.14em] text-terracota-300 uppercase">Empresa</h3>
         <ul className="mt-4 space-y-2 text-sm text-mist">
           <li>{site.legalName}</li>
           <li>RUC {site.ruc}</li>

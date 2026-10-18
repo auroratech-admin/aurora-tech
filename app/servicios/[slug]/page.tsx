@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <p className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">{children}</p>
+  <p className="text-xs font-semibold tracking-[0.14em] text-terracota uppercase">{children}</p>
 )
 
 export default async function ServicePage({ params }: Props) {
@@ -80,7 +80,7 @@ export default async function ServicePage({ params }: Props) {
               <span className="mx-2">/</span>
               <span className="text-white">{service.name}</span>
             </nav>
-            <p className="mt-8 text-xs font-semibold tracking-[0.14em] text-gold-300 uppercase">{service.name}</p>
+            <p className="mt-8 text-xs font-semibold tracking-[0.14em] text-terracota-300 uppercase">{service.name}</p>
             <h1 className="mt-3 max-w-[22ch] font-serif text-4xl leading-[1.1] font-medium text-balance sm:text-5xl">
               {service.headline}
             </h1>
@@ -143,7 +143,7 @@ export default async function ServicePage({ params }: Props) {
             <ol className="mt-10 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
               {process.map((p, i) => (
                 <li key={p.title} className="border-t border-rule py-6">
-                  <span className="font-serif text-2xl text-gold tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-2xl text-terracota tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-2 text-base font-semibold text-ink">{p.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-body">{p.text}</p>
                 </li>
@@ -163,7 +163,7 @@ export default async function ServicePage({ params }: Props) {
                 <details key={f.q} className="group border-t border-ink/15 py-5">
                   <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-base font-semibold text-ink">
                     {f.q}
-                    <span className="mt-0.5 text-gold transition group-open:rotate-45" aria-hidden="true">+</span>
+                    <span className="mt-0.5 text-terracota transition group-open:rotate-45" aria-hidden="true">+</span>
                   </summary>
                   <p className="mt-3 text-sm leading-relaxed text-body">{f.a}</p>
                 </details>
@@ -178,7 +178,7 @@ export default async function ServicePage({ params }: Props) {
             <ul className="mt-5 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
               {others.map((s) => (
                 <li key={s.slug} className="border-t border-rule py-4">
-                  <a href={`/servicios/${s.slug}/`} className="text-sm font-medium text-ink hover:text-gold">
+                  <a href={`/servicios/${s.slug}/`} className="text-sm font-medium text-ink hover:text-terracota">
                     {s.name} →
                   </a>
                 </li>

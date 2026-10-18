@@ -8,7 +8,8 @@ export const site = {
   url: 'https://aurora-tech.com.pe',
   ruc: '20615864804',
   address: 'Cal. Verástegui 160, Zona C, San Juan de Miraflores, Lima, Perú',
-  district: 'San Juan de Miraflores, Lima',
+  // Ubicación pública (portada y pie). El domicilio fiscal completo va solo en contacto y páginas legales.
+  district: 'Lima, Perú',
   representative: 'Renato Cabezas Antezana',
   foundedYear: 2026,
   email: 'gerencia@aurora-tech.com.pe',

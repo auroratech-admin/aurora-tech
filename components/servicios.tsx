@@ -22,7 +22,7 @@ const Servicios = () => (
       <div className="grid gap-x-10 sm:grid-cols-2">
         {services.map((s) => (
           <a key={s.slug} href={`/servicios/${s.slug}/`} className="group border-t border-rule py-6">
-            <h3 className="text-base font-semibold text-ink group-hover:text-gold">
+            <h3 className="text-base font-semibold text-ink group-hover:text-terracota">
               {s.name} <span aria-hidden="true">→</span>
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-body">{summaries[s.slug]}</p>

@@ -124,14 +124,15 @@
   }
 }
 
-/* ---- Marca Aurora Tech · propuesta C "Consultora" ---- */
+/* ---- Marca Aurora Tech · azul noche + Amanecer (ver empresa/marca.md) ---- */
 @theme {
   --font-serif: var(--font-source-serif), Georgia, 'Times New Roman', serif;
   --color-navy: #14233b;
   --color-navy-800: #1d3050;
   --color-ink: #1b2a3f;
-  --color-gold: #9a7b3f;
-  --color-gold-300: #c9ad74;
+  --color-amanecer: #e0743a; /* arco del logo y líneas de acento; no para texto sobre claro */
+  --color-terracota: #b04a1c; /* texto de acento sobre fondo claro (5.2:1) */
+  --color-terracota-300: #e8894f; /* texto de acento sobre azul noche (6.1:1) */
   --color-paper: #fbfaf8;
   --color-sand: #f1eee8;
   --color-rule: #e4e1da;

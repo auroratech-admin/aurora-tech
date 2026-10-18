@@ -3,7 +3,7 @@ import { site } from '@/lib/site'
 const Hero = () => (
   <section id="inicio" className="bg-navy pt-32 pb-16 text-white sm:pt-40 sm:pb-20">
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <div className="h-0.5 w-12 bg-gold" />
+      <div className="h-0.5 w-12 bg-amanecer" />
 
       <h1 className="mt-6 max-w-[20ch] font-serif text-4xl leading-[1.1] font-medium text-balance sm:text-5xl lg:text-6xl">
         Transformamos ideas en soluciones digitales
@@ -47,7 +47,7 @@ const Hero = () => (
         <div className="flex gap-1.5">
           <dt className="sr-only">Sede</dt>
           <dd>
-            San Juan de Miraflores, <span className="font-semibold text-white">Lima</span>
+            <span className="font-semibold text-white">{site.district}</span>
           </dd>
         </div>
       </dl>
